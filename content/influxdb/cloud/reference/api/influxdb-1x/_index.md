@@ -40,14 +40,27 @@ Token authentication requires the following credential:
 Use the `Authorization` header with the `Token` scheme to provide your
 authentication token to InfluxDB.
 
-##### Token authentication with authorization header
+##### Syntax
 ```sh
-# Header syntax
 Authorization: Token <token>
-
-# Header example
-Authorization: Token mYSuP3rs3cREtT0k3N
 ```
+##### Example
+{{% code-tabs-wrapper %}}
+{{% code-tabs %}}
+[curl](#curl)
+[Node.js](#nodejs)
+{{% /code-tabs %}}
+{{% code-tab-content %}}
+```sh
+{{% api/v1-compat/auth/token-curl %}}
+```
+{{% /code-tab-content %}}
+{{% code-tab-content %}}
+```js
+{{% api/v1-compat/auth/token-js %}}
+```
+{{% /code-tab-content %}}
+{{% /code-tabs-wrapper %}}
 
 ### Basic authentication
 Basic authentication requires the following credentials:
@@ -55,10 +68,27 @@ Basic authentication requires the following credentials:
 - **username**: InfluxDB Cloud username
 - **password**: InfluxDB Cloud [authentication token](/influxdb/cloud/security/tokens/)
 
+#### Syntax
 ```sh
-# --user syntax
 <username>:<password>
 ```
+#### Example
+{{% code-tabs-wrapper %}}
+{{% code-tabs %}}
+[curl](#curl)
+[Node.js](#nodejs)
+{{% /code-tabs %}}
+{{% code-tab-content %}}
+```sh
+{{% api/v1-compat/auth/username-curl %}}
+```
+{{% /code-tab-content %}}
+{{% code-tab-content %}}
+```js
+{{% api/v1-compat/auth/username-js %}}
+```
+{{% /code-tab-content %}}
+{{% /code-tabs-wrapper %}}
 
 ## InfluxQL support
 

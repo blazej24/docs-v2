@@ -1,12 +1,18 @@
 var placeholderUrls = {
-  cloud: "https://cloud2.influxdata.com",
-  oss: "http://localhost:8086"
+  cloud: "cloud2.influxdata.com",
+  oss: "localhost:8086"
+}
+
+var protocols = {
+  cloud: "https://",
+  oss: "http://"
 }
 
 var defaultUrls = {
   cloud: "https://us-west-2-1.aws.cloud2.influxdata.com",
   oss: "http://localhost:8086"
 }
+
 
 var elementSelector = ".article--content pre:not(.preserve)"
 
@@ -110,16 +116,27 @@ function getPrevUrls() {
 // Iterate through code blocks and update InfluxDB urls
 // Requires objects with cloud and oss keys and url values
 function updateUrls(prevUrls, newUrls) {
-
   var preference = getPreference()
+  var newUrlHosts = {
+    cloud: newUrls.cloud.replace(protocols.cloud, ''),
+    oss: newUrls.oss.replace(protocols.oss, '')
+  }
 
+  /**
+    * Match and replace hostname-only values first
+    * then replace full URLs, e.g. URLs containing protocols.
+  **/
   var cloudReplacements = [
-    { replace: prevUrls.cloud, with: newUrls.cloud},
-    { replace: prevUrls.oss, with: newUrls.cloud }
+    { replace: prevUrls.cloud, with: newUrlHosts.cloud },
+    { replace: prevUrls.oss, with: newUrlHosts.cloud },
+    { replace: protocols.cloud + prevUrls.cloud, with: newUrls.cloud },
+    { replace: protocols.oss + prevUrls.oss, with: newUrls.cloud },
   ]
   var ossReplacements = [
-    { replace: prevUrls.cloud, with: newUrls.cloud},
-    { replace: prevUrls.oss, with: newUrls.oss }
+    { replace: prevUrls.cloud, with: newUrlHosts.cloud},
+    { replace: prevUrls.oss, with: newUrlHosts.oss },
+    { replace: protocols.cloud + prevUrls.cloud, with: newUrls.cloud},
+    { replace: protocols.oss + prevUrls.oss, with: newUrls.oss }
   ]
 
   if (context() === "cloud") { var replacements = cloudReplacements  }
@@ -164,7 +181,7 @@ function appendUrlSelector() {
 ///////////////////////////// Function executions //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-// Add the preserve tag to code blocks that shouldn't be udpated
+// Add the preserve tag to code blocks that shouldn't be updated
 addPreserve()
 
 // Append URL selector buttons to code blocks
